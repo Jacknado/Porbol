@@ -21,5 +21,6 @@ public class GameManager : MonoBehaviour
         {
             player.transform.position = new Vector3(0, 0, 0);
         }
+        isDead = false;
     }
 }
