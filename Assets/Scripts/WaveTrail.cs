@@ -14,7 +14,7 @@ public class WaveTrail : MonoBehaviour
     void MakeTrail()
     {
         Debug.Log(gameObject.transform.position);
-        GameObject newTrail = Instantiate(trail, transform.position, transform.rotation);
+        GameObject newTrail = Instantiate(trail, transform.position, transform.rotation, trailFolder.transform);
         StartCoroutine(RemoveTrail(newTrail));
     }
     IEnumerator RemoveTrail(GameObject newTrail)

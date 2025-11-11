@@ -7,6 +7,8 @@ public class MovePlayer : MonoBehaviour
     public float zMinimum;
     public float zMaximum;
     public float speed;
+    public float forwardSpeed;
+    public GameObject player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,9 +20,13 @@ public class MovePlayer : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         float MoveMagnitude = horizontal * speed * Time.deltaTime;
-        if(!((transform.position.z + MoveMagnitude) > zMaximum || (transform.position.z + MoveMagnitude) < zMinimum))
+        if (!((transform.position.z + MoveMagnitude) > zMaximum || (transform.position.z + MoveMagnitude) < zMinimum))
         {
-            transform.Translate(new Vector3(0, 0, MoveMagnitude));
+            player.transform.Translate(new Vector3((forwardSpeed * Time.deltaTime), 0, MoveMagnitude));
+        }
+        else
+        {
+            player.transform.Translate(new Vector3((forwardSpeed * Time.deltaTime), 0, 0));
         }
     }
 }
