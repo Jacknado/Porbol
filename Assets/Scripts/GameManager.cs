@@ -1,13 +1,18 @@
+using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private GameObject player;
     public bool isDead;
     private int deathCount = 0;
-
+    public FadeController fadeController;
+    private bool isRespawning = false;
     void Start()
     {
+        fadeController.FadeFromBlack();
         player = transform.GetChild(0).gameObject;
     }
     
@@ -15,17 +20,27 @@ public class GameManager : MonoBehaviour
     {
         if (isDead)
         {
-            Respawn();
+            if (!isRespawning)
+            {
+                StartCoroutine(Respawn());
+            }
         }
+        // if (player.transform.position.x > 30)
+        // {
+        //     SceneManager.LoadScene();
+        // }
     }
     
-    void Respawn()
+    IEnumerator Respawn()
     {
+        isRespawning = true;
+        fadeController.FadeToBlack();
+        yield return new WaitForSeconds(1);
         deathCount += 1;
-        if (isDead)
-        {
-            player.transform.position = new Vector3(0, 0, 0);
-        }
+        player.transform.position = new Vector3(0, 0, 0);
+        fadeController.FadeFromBlack();
+        yield return new WaitForSeconds(1);
         isDead = false;
+        isRespawning = false;
     }
 }
