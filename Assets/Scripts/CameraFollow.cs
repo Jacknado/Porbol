@@ -2,20 +2,14 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-
-    public float rate = 5.0f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public GameObject player;
+    public Vector3 offset = new Vector3(-10, 2, 0);
 
     // Update is called once per frame
     void Update()
     {
-
-        Vector3 location = transform.position;
-        location.x += rate * Time.deltaTime;
-        transform.position = location;
+        Transform playerTransform = player.gameObject.transform;
+        Vector3 cameraPos = new Vector3(playerTransform.position.x, 0, playerTransform.position.z * 0.5f);
+        transform.position = cameraPos + offset;
     }
 }

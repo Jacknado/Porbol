@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    GameObject player;
+    private GameObject player;
     public bool isDead;
     private int deathCount = 0;
-    // Update is called once per frame
+
+    void Start()
+    {
+        player = transform.GetChild(0).gameObject;
+    }
+    
     void Update()
     {
         if (isDead)
