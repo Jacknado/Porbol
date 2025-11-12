@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,9 +9,10 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed = 5f;
 
     private GameManager gameManager;
-
+    private ShieldPowerup shieldPowerup;
     void Start()
     {
+        shieldPowerup = gameObject.GetComponent<ShieldPowerup>();
         gameManager = transform.parent.GetComponent<GameManager>();
     }
 
@@ -29,10 +31,15 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision);
-        if(!collision.gameObject.CompareTag("Border"))
+        if (!collision.gameObject.CompareTag("Border") && !collision.gameObject.name.EndsWith("Powerup"))
         {
             gameManager.isDead = true;
         }
+
+        if (collision.gameObject.name == "ShieldPowerup")
+        {
+            shieldPowerup.Enable();
+            Destroy(collision.gameObject);
+        }  
     }
 }
