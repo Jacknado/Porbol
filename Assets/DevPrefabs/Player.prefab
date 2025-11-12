@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 4093586016526813746}
   - component: {fileID: 1112777958041377467}
   - component: {fileID: 8379980236714584257}
+  - component: {fileID: 6342883891290292380}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -205,6 +206,19 @@ MonoBehaviour:
   frequency: 1.25
   waveAxis: {x: 0, y: 0, z: 1}
   waveOffset: {x: -0.5, y: 0, z: 0}
+--- !u!114 &6342883891290292380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974662549665997800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9156896ca5d139a4aae43f6c8b87e072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShieldSphere: {fileID: 0}
 --- !u!1 &6083907045094287682
 GameObject:
   m_ObjectHideFlags: 0
