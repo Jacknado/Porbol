@@ -1,46 +1,42 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.LightTransport;
-
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public GameObject enemyPrefab;
     public Transform player;
-    public List<GameObject> enemyList = new List<GameObject>();
+    public float spawnDistanceAhead = 10f;
+    public float zSpawnRange = 15f;
+    public int enemiesPerWave = 2;
+    public float spawnIntervalX = 50f;
 
-    public float startingInterval;
-    public float intervalDecrament;
-    public int enemiesPerSpawn = 1;
-    public Transform enemyParent;
-    public float spwanDistance;
-    private float timer;
-    public float minZ;
-    public float maxZ;
-    public float minInterval;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        timer = startingInterval;
-    }
+    private float nextSpawnX = 50f;
 
-    private GameObject selectEnemy()
-    {
-        return enemyList[Random.Range(0, enemyList.Count)];
-    }
-    // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if(timer <= 0)
+        if (player.position.x >= nextSpawnX)
         {
-            for (int i = 1; i <= enemiesPerSpawn; i++)
+            SpawnEnemies();
+            nextSpawnX += spawnIntervalX;
+        }
+    }
+
+    void SpawnEnemies()
+    {
+        for (int i = 0; i < enemiesPerWave; i++)
+        {
+            float zOffset = Random.Range(-zSpawnRange, zSpawnRange);
+            Vector3 spawnPos = new Vector3(player.position.x + spawnDistanceAhead, 0, zOffset);
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+
+            NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent != null)
             {
-                Instantiate(selectEnemy(), new Vector3(player.transform.position.x + spwanDistance, player.transform.position.y, Random.Range(minZ, maxZ)), player.rotation, enemyParent);
+                Enemy follow = enemy.GetComponent<Enemy>();
+                if (follow != null)
+                    follow.target = player;
             }
-            if (startingInterval - intervalDecrament <= minInterval)
-                startingInterval -= intervalDecrament;
-            timer = startingInterval;
         }
     }
 }

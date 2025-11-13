@@ -9,16 +9,24 @@
 
         public void FadeToBlack()
         {
-            StartCoroutine(Fade(0, 1)); // Fade from transparent to black
+            StartCoroutine(Fade(0, 1, false)); // Fade from transparent to black
         }
 
         public void FadeFromBlack()
         {
-            StartCoroutine(Fade(1, 0)); // Fade from black to transparent
+            StartCoroutine(Fade(1, 0, false)); // Fade from black to transparent
+        }
+        public void StartLevel()
+        {
+            StartCoroutine(Fade(1, 0, true)); // Fade from black to transparent
         }
 
-        private IEnumerator Fade(float startAlpha, float targetAlpha)
-        {
+        private IEnumerator Fade(float startAlpha, float targetAlpha, bool levelBegin)
+        {   
+            if (levelBegin)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
             float timer = 0;
             Color currentColor = fadeImage.color;
 
@@ -28,10 +36,10 @@
                 float progress = timer / fadeDuration;
                 currentColor.a = Mathf.Lerp(startAlpha, targetAlpha, progress);
                 fadeImage.color = currentColor;
-                yield return null; // Wait for the next frame
+                yield return null;
             }
 
-            currentColor.a = targetAlpha; // Ensure final alpha is exact
+            currentColor.a = targetAlpha;
             fadeImage.color = currentColor;
         }
     }
