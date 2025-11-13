@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class SceneCollector
 {
-    [MenuItem("Tools/Collect Current Scene Assets (Self-Contained + ReLink + Sorted)")]
+    [MenuItem("Tools/Collect Current Scene Assets (Full Self-Contained + Sorted + Deep Relink)")]
     static void CollectAndRelink()
     {
         var scene = EditorSceneManager.GetActiveScene();
@@ -34,13 +34,13 @@ public class SceneCollector
         int copied = 0;
         Dictionary<string, string> guidMap = new Dictionary<string, string>();
 
+        // === Copy assets and map GUIDs ===
         foreach (string path in deps)
         {
             if (!path.StartsWith("Assets/"))
                 continue;
             if (path.Contains("/Editor/"))
                 continue;
-
             if (path == scenePath)
                 continue;
 
@@ -62,22 +62,46 @@ public class SceneCollector
             }
         }
 
-        // Copy scene file last
+        // === Copy the scene ===
         string sceneDest = Path.Combine(outputFolder, $"{sceneName}.unity").Replace("\\", "/");
         AssetDatabase.CopyAsset(scenePath, sceneDest);
+        AssetDatabase.Refresh();
+
+        // === Fix GUIDs in all YAML-based files ===
+        string[] yamlFiles = Directory.GetFiles(outputFolder, "*.*", SearchOption.AllDirectories);
+        foreach (string file in yamlFiles)
+        {
+            if (IsTextAsset(file))
+            {
+                string text = File.ReadAllText(file);
+                bool modified = false;
+
+                foreach (var kvp in guidMap)
+                {
+                    if (text.Contains(kvp.Key))
+                    {
+                        text = text.Replace(kvp.Key, kvp.Value);
+                        modified = true;
+                    }
+                }
+
+                if (modified)
+                    File.WriteAllText(file, text);
+            }
+        }
 
         AssetDatabase.Refresh();
 
-        // Replace GUIDs in the copied scene
-        string sceneText = File.ReadAllText(sceneDest);
-        foreach (var kvp in guidMap)
-            sceneText = sceneText.Replace(kvp.Key, kvp.Value);
-        File.WriteAllText(sceneDest, sceneText);
+        Debug.Log($"✅ Scene '{sceneName}' fully collected and deep-relinked into '{outputFolder}'.");
+        Debug.Log($"📦 {copied} dependent assets copied, including materials and textures.");
+    }
 
-        AssetDatabase.Refresh();
+    // === Helpers ===
 
-        Debug.Log($"✅ Scene '{sceneName}' collected, relinked, and organized into '{outputFolder}'.");
-        Debug.Log($"📦 {copied} dependent assets copied and sorted.");
+    static bool IsTextAsset(string path)
+    {
+        string ext = Path.GetExtension(path).ToLower();
+        return IsIn(ext, ".unity", ".mat", ".prefab", ".anim", ".controller", ".overridecontroller", ".asset");
     }
 
     static string GetCategoryFolder(string assetPath)
