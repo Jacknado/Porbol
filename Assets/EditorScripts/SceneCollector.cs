@@ -3,11 +3,10 @@ using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 public class SceneCollector
 {
-    [MenuItem("Tools/Collect Current Scene Assets (Self-Contained + ReLink)")]
+    [MenuItem("Tools/Collect Current Scene Assets (Self-Contained + ReLink + Sorted)")]
     static void CollectAndRelink()
     {
         var scene = EditorSceneManager.GetActiveScene();
@@ -30,60 +29,81 @@ public class SceneCollector
             Directory.Delete(outputFolder, true);
         Directory.CreateDirectory(outputFolder);
 
-        Object sceneAsset = AssetDatabase.LoadAssetAtPath<Object>(scenePath);
-        Object[] deps = EditorUtility.CollectDependencies(new Object[] { sceneAsset });
+        string[] deps = AssetDatabase.GetDependencies(scenePath, true);
 
-        // Track GUID remapping
-        Dictionary<string, string> guidMap = new Dictionary<string, string>();
         int copied = 0;
+        Dictionary<string, string> guidMap = new Dictionary<string, string>();
 
-        foreach (var obj in deps)
+        foreach (string path in deps)
         {
-            string path = AssetDatabase.GetAssetPath(obj);
-            if (string.IsNullOrEmpty(path) || !path.StartsWith("Assets/"))
+            if (!path.StartsWith("Assets/"))
                 continue;
-
             if (path.Contains("/Editor/"))
                 continue;
 
-            string dest = Path.Combine(outputFolder, Path.GetFileName(path));
-            if (!File.Exists(dest))
+            if (path == scenePath)
+                continue;
+
+            string category = GetCategoryFolder(path);
+            string categoryFolder = Path.Combine(outputFolder, category).Replace("\\", "/");
+            if (!Directory.Exists(categoryFolder))
+                Directory.CreateDirectory(categoryFolder);
+
+            string fileName = Path.GetFileName(path);
+            string destPath = Path.Combine(categoryFolder, fileName).Replace("\\", "/");
+
+            if (AssetDatabase.CopyAsset(path, destPath))
             {
-                File.Copy(path, dest, true);
-                if (File.Exists(path + ".meta"))
-                {
-                    File.Copy(path + ".meta", dest + ".meta", true);
-
-                    // Map old GUID to new GUID
-                    string oldGuid = File.ReadAllText(path + ".meta");
-                    string newGuid = File.ReadAllText(dest + ".meta");
-
-                    var oldMatch = Regex.Match(oldGuid, @"guid:\s*([a-f0-9]+)");
-                    var newMatch = Regex.Match(newGuid, @"guid:\s*([a-f0-9]+)");
-
-                    if (oldMatch.Success && newMatch.Success)
-                        guidMap[oldMatch.Groups[1].Value] = newMatch.Groups[1].Value;
-                }
                 copied++;
+                string oldGuid = AssetDatabase.AssetPathToGUID(path);
+                string newGuid = AssetDatabase.AssetPathToGUID(destPath);
+                if (!string.IsNullOrEmpty(oldGuid) && !string.IsNullOrEmpty(newGuid))
+                    guidMap[oldGuid] = newGuid;
             }
         }
 
-        // Copy scene and meta
-        string sceneDest = Path.Combine(outputFolder, $"{sceneName}.unity");
-        File.Copy(scenePath, sceneDest, true);
-        if (File.Exists(scenePath + ".meta"))
-            File.Copy(scenePath + ".meta", sceneDest + ".meta", true);
+        // Copy scene file last
+        string sceneDest = Path.Combine(outputFolder, $"{sceneName}.unity").Replace("\\", "/");
+        AssetDatabase.CopyAsset(scenePath, sceneDest);
 
-        // Relink GUIDs in the new scene file
+        AssetDatabase.Refresh();
+
+        // Replace GUIDs in the copied scene
         string sceneText = File.ReadAllText(sceneDest);
         foreach (var kvp in guidMap)
-        {
             sceneText = sceneText.Replace(kvp.Key, kvp.Value);
-        }
         File.WriteAllText(sceneDest, sceneText);
 
         AssetDatabase.Refresh();
-        Debug.Log($"✅ Scene '{sceneName}' collected, relinked, and made fully self-contained in '{outputFolder}'.");
-        Debug.Log($"📦 {copied} assets copied and remapped.");
+
+        Debug.Log($"✅ Scene '{sceneName}' collected, relinked, and organized into '{outputFolder}'.");
+        Debug.Log($"📦 {copied} dependent assets copied and sorted.");
+    }
+
+    static string GetCategoryFolder(string assetPath)
+    {
+        string ext = Path.GetExtension(assetPath).ToLower();
+
+        if (IsIn(ext, ".png", ".jpg", ".jpeg", ".tga", ".psd", ".tif", ".tiff", ".bmp", ".hdr", ".exr"))
+            return "Textures";
+        if (IsIn(ext, ".mat"))
+            return "Materials";
+        if (IsIn(ext, ".fbx", ".obj", ".blend", ".dae", ".3ds", ".stl"))
+            return "Meshes";
+        if (IsIn(ext, ".prefab"))
+            return "Prefabs";
+        if (IsIn(ext, ".anim", ".controller", ".overridecontroller"))
+            return "Animations";
+        if (IsIn(ext, ".cs", ".shader", ".cginc", ".compute"))
+            return "Scripts";
+
+        return "Misc";
+    }
+
+    static bool IsIn(string ext, params string[] list)
+    {
+        foreach (var l in list)
+            if (ext == l) return true;
+        return false;
     }
 }
