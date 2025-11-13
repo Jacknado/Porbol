@@ -17,6 +17,7 @@ public class ObstacleSpawner : MonoBehaviour
     public float spawnY = 0f;
 
     [Header("Spacing & Attempts")]
+    public int seed = 42;
     public float collisionRadius = 2f;
     public int maxPlacementAttempts = 1000;
 
@@ -38,6 +39,8 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnUntilFull()
     {
+        var previousState = UnityEngine.Random.state;
+        Random.InitState(seed); 
         int failedAttempts = 0;
 
         while (failedAttempts < maxPlacementAttempts)
@@ -62,12 +65,14 @@ public class ObstacleSpawner : MonoBehaviour
                 failedAttempts++;
             }
         }
+        Random.state = previousState;
 
         Debug.Log($"ObstacleSpawner: Placed {spawnedObstacles.Count} obstacles before area filled.");
     }
 
     void ReplaceWithPowerups()
     {
+
         if (powerupPrefabs == null || spawnedObstacles.Count == 0) return;
 
         int powerupCount = Mathf.RoundToInt(spawnedObstacles.Count * powerupPercentage);
