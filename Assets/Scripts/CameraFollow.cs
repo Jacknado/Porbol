@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         Transform playerTransform = player.gameObject.transform;
-        Vector3 cameraPos = new Vector3(playerTransform.position.x, 0, playerTransform.position.z * 0.5f);
+        Vector3 cameraPos = new Vector3(playerTransform.position.x, 0, playerTransform.position.z * 0.75f);
         transform.position = cameraPos + offset;
     }
 }

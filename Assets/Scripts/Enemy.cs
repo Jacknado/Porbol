@@ -3,23 +3,19 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public Transform player;
+    public Transform target;
     private NavMeshAgent agent;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        agent.updateUpAxis = false;
         agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(player)
-        {
-            agent.SetDestination(player.position);
-        }
+        if (target != null)
+            agent.SetDestination(target.position);
     }
 }
