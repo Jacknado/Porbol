@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
+    public GameObject obstacleFolder;
     [Header("Prefabs")]
     public List<GameObject> obstaclePrefabs;
-    public GameObject powerupPrefab;
+    public List<GameObject> powerupPrefabs;
 
     [Header("Spawn Area")]
     public float minX = 10f;
@@ -52,7 +53,7 @@ public class ObstacleSpawner : MonoBehaviour
             if (hits.Length == 0)
             {
                 GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
-                GameObject spawned = Instantiate(prefab, pos, Quaternion.identity);
+                GameObject spawned = Instantiate(prefab, pos, Quaternion.identity, obstacleFolder.transform);
                 spawnedObstacles.Add(spawned);
                 failedAttempts = 0;
             }
@@ -67,7 +68,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     void ReplaceWithPowerups()
     {
-        if (powerupPrefab == null || spawnedObstacles.Count == 0) return;
+        if (powerupPrefabs == null || spawnedObstacles.Count == 0) return;
 
         int powerupCount = Mathf.RoundToInt(spawnedObstacles.Count * powerupPercentage);
         powerupCount = Mathf.Clamp(powerupCount, 0, spawnedObstacles.Count);
@@ -89,9 +90,9 @@ public class ObstacleSpawner : MonoBehaviour
             Vector3 pos = oldObstacle.transform.position;
 
             Destroy(oldObstacle);
-
-            GameObject powerup = Instantiate(powerupPrefab, pos, Quaternion.identity);
-            powerup.name = powerupPrefab.name;
+            int randomPowerup = Random.Range(0, powerupPrefabs.Count);
+            GameObject powerup = Instantiate(powerupPrefabs[randomPowerup], pos, Quaternion.identity, obstacleFolder.transform);
+            powerup.name = powerupPrefabs[randomPowerup].name;
         }
 
         Debug.Log($"ObstacleSpawner: Replaced {powerupCount} obstacles with powerups.");

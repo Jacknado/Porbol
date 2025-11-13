@@ -9,7 +9,6 @@ public class EnemySpawner : MonoBehaviour
     public float zSpawnRange = 15f;
     public int enemiesPerWave = 2;
     public float spawnIntervalX = 50f;
-
     private float nextSpawnX = 50f;
 
     void Update()

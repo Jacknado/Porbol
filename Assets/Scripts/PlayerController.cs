@@ -10,9 +10,11 @@ public class PlayerController : MonoBehaviour
 
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
+    private ExplosionPowerup explosionPowerup;
     void Start()
     {
         shieldPowerup = gameObject.GetComponent<ShieldPowerup>();
+        explosionPowerup = gameObject.GetComponent<ExplosionPowerup>();
         gameManager = transform.parent.GetComponent<GameManager>();
     }
 
@@ -39,7 +41,12 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name == "ShieldPowerup")
         {
             shieldPowerup.Enable();
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
+        }
+        if (collision.gameObject.name == "ExplosionPowerup")
+        {
+            explosionPowerup.Explode(transform.position);
+            collision.gameObject.SetActive(false);
         }  
     }
 }

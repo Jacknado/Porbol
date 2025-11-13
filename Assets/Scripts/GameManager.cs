@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private GameObject obstacleFolder;
     private GameObject player;
     private FadeController fadeController;
     public bool isDead;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     {
         player = transform.GetChild(0).gameObject;
         fadeController = transform.parent.Find("Canvas").GetComponent<FadeController>();
+        obstacleFolder = transform.parent.Find("ObstacleFolder").gameObject;
         fadeController.StartLevel();
     }
     
@@ -41,6 +43,20 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         deathCount += 1;
         player.transform.position = new Vector3(0, 0, 0);
+
+        foreach (Transform child in obstacleFolder.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+
+        foreach (GameObject child in SceneManager.GetActiveScene().GetRootGameObjects())
+        {
+            if (child.name == "Enemy(Clone)")
+            {
+                Destroy(child);
+            }
+        }
+
         fadeController.FadeFromBlack();
         yield return new WaitForSeconds(1);
         isDead = false;
