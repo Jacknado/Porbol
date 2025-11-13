@@ -2,50 +2,40 @@ using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.IO;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class SceneCollector
 {
-    [MenuItem("Tools/Collect Current Scene Assets (Self-Contained)")]
-    static void CollectCurrentSceneAssets()
+    [MenuItem("Tools/Collect Current Scene Assets (Self-Contained + ReLink)")]
+    static void CollectAndRelink()
     {
-        // Get the currently open scene
         var scene = EditorSceneManager.GetActiveScene();
         if (!scene.isLoaded)
         {
-            Debug.LogError("❌ No scene is currently loaded.");
+            Debug.LogError("❌ No scene loaded.");
             return;
         }
 
         string sceneName = scene.name;
         string scenePath = scene.path;
-
         if (string.IsNullOrEmpty(scenePath))
         {
-            Debug.LogError("❌ Current scene has not been saved yet. Please save it before collecting assets.");
+            Debug.LogError("❌ Please save the scene before collecting.");
             return;
         }
 
-        // Prepare the output folder
         string outputFolder = $"Assets/UsedAssets/{sceneName}";
         if (Directory.Exists(outputFolder))
-        {
-            Debug.Log($"🧹 Cleaning existing folder: {outputFolder}");
             Directory.Delete(outputFolder, true);
-        }
         Directory.CreateDirectory(outputFolder);
 
-        // Load the scene as an asset
         Object sceneAsset = AssetDatabase.LoadAssetAtPath<Object>(scenePath);
-        if (sceneAsset == null)
-        {
-            Debug.LogError($"❌ Could not load scene asset at path: {scenePath}");
-            return;
-        }
-
-        // Collect all dependencies
         Object[] deps = EditorUtility.CollectDependencies(new Object[] { sceneAsset });
 
-        int copiedCount = 0;
+        // Track GUID remapping
+        Dictionary<string, string> guidMap = new Dictionary<string, string>();
+        int copied = 0;
 
         foreach (var obj in deps)
         {
@@ -53,31 +43,47 @@ public class SceneCollector
             if (string.IsNullOrEmpty(path) || !path.StartsWith("Assets/"))
                 continue;
 
-            // Skip editor-only content
             if (path.Contains("/Editor/"))
                 continue;
 
             string dest = Path.Combine(outputFolder, Path.GetFileName(path));
-
-            // Copy asset and its .meta file
             if (!File.Exists(dest))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(dest));
                 File.Copy(path, dest, true);
                 if (File.Exists(path + ".meta"))
+                {
                     File.Copy(path + ".meta", dest + ".meta", true);
-                copiedCount++;
+
+                    // Map old GUID to new GUID
+                    string oldGuid = File.ReadAllText(path + ".meta");
+                    string newGuid = File.ReadAllText(dest + ".meta");
+
+                    var oldMatch = Regex.Match(oldGuid, @"guid:\s*([a-f0-9]+)");
+                    var newMatch = Regex.Match(newGuid, @"guid:\s*([a-f0-9]+)");
+
+                    if (oldMatch.Success && newMatch.Success)
+                        guidMap[oldMatch.Groups[1].Value] = newMatch.Groups[1].Value;
+                }
+                copied++;
             }
         }
 
-        // Copy the scene itself and meta
+        // Copy scene and meta
         string sceneDest = Path.Combine(outputFolder, $"{sceneName}.unity");
         File.Copy(scenePath, sceneDest, true);
         if (File.Exists(scenePath + ".meta"))
             File.Copy(scenePath + ".meta", sceneDest + ".meta", true);
 
+        // Relink GUIDs in the new scene file
+        string sceneText = File.ReadAllText(sceneDest);
+        foreach (var kvp in guidMap)
+        {
+            sceneText = sceneText.Replace(kvp.Key, kvp.Value);
+        }
+        File.WriteAllText(sceneDest, sceneText);
+
         AssetDatabase.Refresh();
-        Debug.Log($"✅ Successfully collected scene '{sceneName}' and {copiedCount} assets into '{outputFolder}'.");
-        Debug.Log("📦 You can now commit that folder and others can open the scene with no missing assets.");
+        Debug.Log($"✅ Scene '{sceneName}' collected, relinked, and made fully self-contained in '{outputFolder}'.");
+        Debug.Log($"📦 {copied} assets copied and remapped.");
     }
 }
