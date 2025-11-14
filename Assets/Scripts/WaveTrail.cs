@@ -1,40 +1,65 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveTrail : MonoBehaviour
+[RequireComponent(typeof(LineRenderer))]
+public class WaveTrailSmooth : MonoBehaviour
 {
-    public GameObject trail;
-    public GameObject trailFolder;
-    public float trailInterval = 0.01f;
-    public float removeTrailTime = 1.3f;
+    [Header("Wave Settings")]
     public float amplitude = 0.25f;
     public float frequency = 1.25f;
     public Vector3 waveAxis = new Vector3(0, 0, 1);
     public Vector3 waveOffset = new Vector3(-0.5f, 0, 0);
 
-    private float timeElapsed = 0f;
+    [Header("Trail Settings")]
+    public float trailLength = 1.5f;
+    public float pointSpacing = 0.02f;
+    public float thickness = 0.2f;
+
+    [Header("Color Settings")]
+    public Color startColor = Color.white;
+    public Color endColor = new Color(1,1,1,0);    // fade to transparent
+
+    private LineRenderer lr;
+    private float timer;
+    private List<Vector3> points = new List<Vector3>();
 
     void Start()
     {
-        InvokeRepeating(nameof(MakeTrail), 0, trailInterval);
+        lr = GetComponent<LineRenderer>();
+
+        lr.positionCount = 0;
+        lr.widthMultiplier = thickness;
+
+        lr.startColor = startColor;
+        lr.endColor = endColor;
+
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+        lr.textureMode = LineTextureMode.Stretch;
     }
 
-    void MakeTrail()
+    void Update()
     {
-        float waveValue = Mathf.Sin(timeElapsed * Mathf.PI * 2f * frequency) * amplitude;
-        Vector3 offset = waveAxis.normalized * waveValue;
+        timer += Time.deltaTime;
 
-        Vector3 spawnPos = transform.position + offset + waveOffset;
-        GameObject newTrail = Instantiate(trail, spawnPos, transform.rotation, trailFolder.transform);
+        // Add new point
+        if (timer >= pointSpacing)
+        {
+            float t = Time.time;
+            float waveValue = Mathf.Sin(t * Mathf.PI * 2f * frequency) * amplitude;
+            Vector3 offset = waveAxis.normalized * waveValue;
 
-        StartCoroutine(RemoveTrail(newTrail));
+            Vector3 pos = transform.position + offset + waveOffset;
+            points.Add(pos);
+            timer = 0;
+        }
 
-        timeElapsed += trailInterval;
-    }
+        // Limit the trail length
+        float maxPoints = trailLength / pointSpacing;
+        if (points.Count > maxPoints)
+            points.RemoveAt(0);
 
-    IEnumerator RemoveTrail(GameObject newTrail)
-    {
-        yield return new WaitForSeconds(removeTrailTime);
-        Destroy(newTrail);
+        // Update the line
+        lr.positionCount = points.Count;
+        lr.SetPositions(points.ToArray());
     }
 }
