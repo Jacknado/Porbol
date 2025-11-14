@@ -7,7 +7,8 @@ public class PlayerController : MonoBehaviour
     public float zMaximum = 15f;
     public float sidewaysSpeed = 10f;
     public float forwardSpeed = 5f;
-
+    public GameObject ExplosionIndicator;
+    public bool hasExplosion;
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
     private ExplosionPowerup explosionPowerup;
@@ -29,6 +30,8 @@ public class PlayerController : MonoBehaviour
             transform.Translate(forwardSpeed * Time.deltaTime, 0, moveZ, Space.World);
         else
             transform.Translate(forwardSpeed * Time.deltaTime, 0, 0, Space.World);
+        if (Input.GetKeyDown(KeyCode.Q))
+            explosionPowerup.Explode(transform.position);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -45,7 +48,9 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.name == "ExplosionPowerup")
         {
-            explosionPowerup.Explode(transform.position);
+            hasExplosion = true;
+            
+            ExplosionIndicator.SetActive(true);
             collision.gameObject.SetActive(false);
         }  
     }
