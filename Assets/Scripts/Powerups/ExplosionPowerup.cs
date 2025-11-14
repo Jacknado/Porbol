@@ -5,12 +5,12 @@ public class ExplosionPowerup : MonoBehaviour
 {
     public float explosionRadius = 5f;
     public LayerMask destroyableLayer;
-    public GameObject ExplosionIndicator;
+    private GameObject explosionIndicator;
 
     public void Explode(Vector3 position)
     {
         Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
-        ExplosionIndicator.SetActive(false);
+        explosionIndicator.SetActive(false);
         foreach (Collider hit in hits)
         {
             if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
@@ -21,7 +21,7 @@ public class ExplosionPowerup : MonoBehaviour
     }
     void Start()
     {
-        ExplosionIndicator = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
+        explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
     }
     // Optional: visualize explosion radius in editor
     private void OnDrawGizmosSelected()

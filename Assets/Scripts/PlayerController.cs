@@ -7,15 +7,16 @@ public class PlayerController : MonoBehaviour
     public float zMaximum = 15f;
     public float sidewaysSpeed = 10f;
     public float forwardSpeed = 5f;
-    public GameObject ExplosionIndicator;
     public bool hasExplosion;
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
     private ExplosionPowerup explosionPowerup;
+    private GameObject explosionIndicator;
     void Start()
     {
         shieldPowerup = gameObject.GetComponent<ShieldPowerup>();
         explosionPowerup = gameObject.GetComponent<ExplosionPowerup>();
+        explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
         gameManager = transform.parent.GetComponent<GameManager>();
     }
 
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
             transform.Translate(forwardSpeed * Time.deltaTime, 0, moveZ, Space.World);
         else
             transform.Translate(forwardSpeed * Time.deltaTime, 0, 0, Space.World);
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && hasExplosion)
             explosionPowerup.Explode(transform.position);
     }
 
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
         {
             hasExplosion = true;
             
-            ExplosionIndicator.SetActive(true);
+            explosionIndicator.SetActive(true);
             collision.gameObject.SetActive(false);
         }  
     }

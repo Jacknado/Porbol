@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Threading;
+using TMPro;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +11,7 @@ public class GameManager : MonoBehaviour
     private GameObject obstacleFolder;
     private GameObject player;
     private FadeController fadeController;
+    private TextMeshProUGUI highScoreText;
     public bool isDead;
     private int deathCount = 0;
     
@@ -18,11 +21,14 @@ public class GameManager : MonoBehaviour
         player = transform.GetChild(0).gameObject;
         fadeController = transform.parent.Find("Canvas").GetComponent<FadeController>();
         obstacleFolder = transform.parent.Find("ObstacleFolder").gameObject;
+        highScoreText = transform.parent.Find("Canvas").Find("HighScoreText").GetComponent<TextMeshProUGUI>();
         fadeController.StartLevel();
     }
     
     void Update()
     {
+        highScoreText.text = "Score\n" + MathF.Round(player.transform.position.x / 3) + "/100";
+
         if (isDead)
         {
             if (!isRespawning)
@@ -41,6 +47,8 @@ public class GameManager : MonoBehaviour
         isRespawning = true;
         fadeController.FadeToBlack();
         yield return new WaitForSeconds(1.5f);
+
+
         deathCount += 1;
         player.transform.position = new Vector3(0, 0, 0);
 
@@ -56,7 +64,7 @@ public class GameManager : MonoBehaviour
                 Destroy(child);
             }
         }
-
+        
         fadeController.FadeFromBlack();
         yield return new WaitForSeconds(1);
         isDead = false;
