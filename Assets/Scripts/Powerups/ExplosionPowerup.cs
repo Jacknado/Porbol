@@ -13,7 +13,7 @@ public class ExplosionPowerup : MonoBehaviour
         ExplosionIndicator.SetActive(false);
         foreach (Collider hit in hits)
         {
-            if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+            if (hit is MeshCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
             {
                 hit.gameObject.SetActive(false);
             }
