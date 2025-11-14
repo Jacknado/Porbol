@@ -53,7 +53,7 @@ public class ObstacleSpawner : MonoBehaviour
             if (hits.Length == 0)
             {
                 GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
-                GameObject spawned = Instantiate(prefab, pos, Quaternion.identity, obstacleFolder.transform);
+                GameObject spawned = Instantiate(prefab, pos, prefab.transform.rotation, obstacleFolder.transform);
                 spawnedObstacles.Add(spawned);
                 failedAttempts = 0;
             }
