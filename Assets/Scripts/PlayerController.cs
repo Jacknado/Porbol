@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public float sidewaysSpeed = 10f;
     public float forwardSpeed = 5f;
     public bool hasExplosion;
+    public ParticleSystem deathEffect;
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
     private ExplosionPowerup explosionPowerup;
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
         if (!collision.gameObject.CompareTag("Border") && !collision.gameObject.name.EndsWith("Powerup"))
         {
             gameManager.isDead = true;
+            deathEffect.time = 0;
+            deathEffect.Play();
         }
 
         if (collision.gameObject.name == "ShieldPowerup")

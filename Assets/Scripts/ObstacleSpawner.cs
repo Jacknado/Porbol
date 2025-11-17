@@ -51,12 +51,14 @@ public class ObstacleSpawner : MonoBehaviour
                 Random.Range(minZ, maxZ)
             );
 
+            Quaternion rot = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
+
             Collider[] hits = Physics.OverlapSphere(pos, collisionRadius);
 
             if (hits.Length == 0)
             {
                 GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Count)];
-                GameObject spawned = Instantiate(prefab, pos, Quaternion.identity, obstacleFolder.transform);
+                GameObject spawned = Instantiate(prefab, pos, rot, obstacleFolder.transform);
                 spawnedObstacles.Add(spawned);
                 failedAttempts = 0;
             }
