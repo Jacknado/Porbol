@@ -857,12 +857,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3361031518887043173, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
+      propertyPath: thickness
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3361031518887043173, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
+      propertyPath: trailLength
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3361031518887043173, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
+      propertyPath: pointSpacing
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5209541820195022396, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
       propertyPath: ExplosionIndicator
       value: 
       objectReference: {fileID: 2511679975191812785}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4681708842430228805, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3423709779521455552, guid: 6c51b0ce18ebe054dbe23add37d7bc47, type: 3}
