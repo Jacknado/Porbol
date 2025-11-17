@@ -11,12 +11,16 @@ public class ExplosionPowerup : MonoBehaviour
     {
         Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
         explosionIndicator.SetActive(false);
-        foreach (Collider hit in hits)
+        if (GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion)
         {
-            if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+            foreach (Collider hit in hits)
             {
-                hit.gameObject.SetActive(false);
+                if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+                {
+                    hit.gameObject.SetActive(false);
+                }
             }
+            GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion = false;
         }
     }
     void Start()
