@@ -15,7 +15,7 @@ public class ExplosionPowerup : MonoBehaviour
         {
             foreach (Collider hit in hits)
             {
-                if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+                if (hit is Collider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
                 {
                     hit.gameObject.SetActive(false);
                 }

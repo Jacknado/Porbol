@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
         deathCount += 1;
         player.transform.position = new Vector3(0, 0, 0);
-
+        player.GetComponent<WaveTrailSmooth>().RemoveTrail();
         foreach (Transform child in obstacleFolder.transform)
         {
             child.gameObject.SetActive(true);
@@ -67,8 +67,9 @@ public class GameManager : MonoBehaviour
         // GameObject.Find("Audio Source").GetComponent<Music>().time = 0;
         // GameObject.Find("Audio Source").GetComponent<Music>().frequency = 440;
         fadeController.FadeFromBlack();
-        yield return new WaitForSeconds(1);
         isDead = false;
+        yield return new WaitForSeconds(1);
+        
         isRespawning = false;
     }
     IEnumerator NextLevel()
