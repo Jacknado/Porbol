@@ -9,23 +9,32 @@
 
         public void FadeToBlack()
         {
-            StartCoroutine(Fade(0, 1, false)); // Fade from transparent to black
+            StartCoroutine(Fade(0, 1, false, false)); // Fade from transparent to black
         }
 
         public void FadeFromBlack()
         {
-            StartCoroutine(Fade(1, 0, false)); // Fade from black to transparent
+            StartCoroutine(Fade(1, 0, false, false)); // Fade from black to transparent
         }
         public void StartLevel()
         {
-            StartCoroutine(Fade(1, 0, true)); // Fade from black to transparent
+            StartCoroutine(Fade(1, 0, true, false)); // Fade from black to transparent
         }
+        public void MainMenuFade()
+        {
+            StartCoroutine(Fade(1, 0, true, true));
+        }
+    
 
-        private IEnumerator Fade(float startAlpha, float targetAlpha, bool levelBegin)
+        private IEnumerator Fade(float startAlpha, float targetAlpha, bool levelBegin, bool isMainMenu)
         {   
             if (levelBegin)
             {
                 yield return new WaitForSeconds(0.5f);
+            }
+            if (isMainMenu)
+            {
+                yield return new WaitForSeconds(2f);
             }
             float timer = 0;
             Color currentColor = fadeImage.color;

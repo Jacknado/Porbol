@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private FadeController fadeController;
     private TextMeshProUGUI highScoreText;
     public bool isDead;
+    public bool isMainMenu;
     private int deathCount = 0;
     
     private bool isRespawning = false;
@@ -22,7 +23,14 @@ public class GameManager : MonoBehaviour
         fadeController = transform.parent.Find("Canvas").GetComponent<FadeController>();
         obstacleFolder = transform.parent.Find("ObstacleFolder").gameObject;
         highScoreText = transform.parent.Find("Canvas").Find("HighScoreText").GetComponent<TextMeshProUGUI>();
-        fadeController.StartLevel();
+        if (isMainMenu)
+        {
+            fadeController.MainMenuFade();
+        }
+        else
+        {
+            fadeController.StartLevel();
+        }
     }
     
     void Update()
@@ -38,7 +46,10 @@ public class GameManager : MonoBehaviour
         }
         if (player.transform.position.x > 300)
         {
-            StartCoroutine(NextLevel());
+            if(!isMainMenu)
+            {
+                StartCoroutine(NextLevel());
+            }
         }
     }
 
