@@ -36,6 +36,11 @@ public class WaveTrailSmooth : MonoBehaviour
         lr.material = new Material(Shader.Find("Sprites/Default"));
         lr.textureMode = LineTextureMode.Stretch;
     }
+    public void RemoveTrail()
+    {
+        points = new List<Vector3>();
+        lr.SetPositions(points.ToArray());
+    }
 
     void Update()
     {

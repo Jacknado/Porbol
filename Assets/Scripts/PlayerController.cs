@@ -7,22 +7,28 @@ public class PlayerController : MonoBehaviour
     public float zMaximum = 15f;
     public float sidewaysSpeed = 10f;
     public float forwardSpeed = 5f;
+    
     public bool hasExplosion;
+    public bool hasStep;
     public ParticleSystem deathEffect;
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
     private ExplosionPowerup explosionPowerup;
+    private MistyStep mistyStep;
     private GameObject explosionIndicator;
     void Start()
     {
         shieldPowerup = gameObject.GetComponent<ShieldPowerup>();
         explosionPowerup = gameObject.GetComponent<ExplosionPowerup>();
+        mistyStep = gameObject.GetComponent<MistyStep>();
         explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
         gameManager = transform.parent.GetComponent<GameManager>();
     }
 
     void Update()
     {
+        if(gameManager.isDead)
+            return;
         // Player movement
         float horizontal = Input.GetAxis("Horizontal");
         float moveZ = -horizontal * sidewaysSpeed * Time.deltaTime;
@@ -34,6 +40,8 @@ public class PlayerController : MonoBehaviour
             transform.Translate(forwardSpeed * Time.deltaTime, 0, 0, Space.World);
         if (Input.GetKeyDown(KeyCode.Q) && hasExplosion)
             explosionPowerup.Explode(transform.position);
+        else if (Input.GetKeyDown(KeyCode.E) && hasStep)
+            mistyStep.Step(transform.position);
     }
 
     void OnCollisionEnter(Collision collision)
@@ -55,6 +63,12 @@ public class PlayerController : MonoBehaviour
             hasExplosion = true;
             
             explosionIndicator.SetActive(true);
+            collision.gameObject.SetActive(false);
+        }  
+        if (collision.gameObject.name == "MistyStepPowerup")
+        {    
+            mistyStep.Enable();
+            hasStep = true;
             collision.gameObject.SetActive(false);
         }  
     }
