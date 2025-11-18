@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour
                 Destroy(child);
             }
         }
-        GameObject.Find("Audio Source").GetComponent<Music>().time = 0;
-        GameObject.Find("Audio Source").GetComponent<Music>().frequency = 440;
+        // GameObject.Find("Audio Source").GetComponent<Music>().time = 0;
+        // GameObject.Find("Audio Source").GetComponent<Music>().frequency = 440;
         fadeController.FadeFromBlack();
         yield return new WaitForSeconds(1);
         isDead = false;
