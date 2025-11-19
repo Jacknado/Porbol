@@ -6,6 +6,7 @@
     {
         public Image fadeImage;
         public float fadeDuration = 1.0f; // Duration of the fade in seconds
+        public bool mainMenuFirst = true;
 
         public void FadeToBlack()
         {
@@ -23,11 +24,16 @@
         public void MainMenuFade()
         {
             StartCoroutine(Fade(1, 0, true, true));
+            
         }
     
 
         private IEnumerator Fade(float startAlpha, float targetAlpha, bool levelBegin, bool isMainMenu)
         {   
+            if (!fadeImage.gameObject.activeInHierarchy)
+            {
+                fadeImage.gameObject.SetActive(true);
+            }
             if (levelBegin)
             {
                 yield return new WaitForSeconds(0.5f);
@@ -50,5 +56,11 @@
 
             currentColor.a = targetAlpha;
             fadeImage.color = currentColor;
+            
+            if (isMainMenu && mainMenuFirst)
+            {
+                fadeImage.gameObject.SetActive(false);
+                mainMenuFirst = false;
+            }
         }
     }

@@ -89,4 +89,20 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public void StartGame()
+    {
+        fadeController.transform.Find("Name").gameObject.SetActive(false);
+        StartCoroutine(ButtonStartGame());
+    }
+    IEnumerator ButtonStartGame()
+    {
+        fadeController.FadeToBlack();
+        yield return new WaitForSeconds(1f);
+        // Get the build index of the currently active scene
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        // Load the scene with the next build index
+        SceneManager.LoadScene(currentSceneIndex + 1);
+    }
 }
