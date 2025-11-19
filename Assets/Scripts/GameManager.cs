@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
 
         foreach (GameObject child in SceneManager.GetActiveScene().GetRootGameObjects())
         {
-            if (child.name == "Enemy(Clone)")
+            if (child.name == "FastEnemy(Clone)" || child.name == "SlowEnemy(Clone)")
             {
                 Destroy(child);
             }
