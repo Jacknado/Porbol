@@ -119,6 +119,30 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &276698403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6276887766260521406, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+  m_PrefabInstance: {fileID: 542914732}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &276698413 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7586640021663684556, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+  m_PrefabInstance: {fileID: 542914732}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &276698414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276698403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02b0ac17f8fc2834185f30163751091c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 15
+  TargetBlock: {fileID: 3322795382590321690, guid: ca86d8526ecf1474ab456da6895e1a8d, type: 3}
 --- !u!1 &410875434
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,10 +230,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 276698413}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: enemies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: enemies.Array.data[0].enemy
+      value: 
+      objectReference: {fileID: 3901025928255337147, guid: fb82764413dbc5d43bd7850a494c16dd, type: 3}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: enemies.Array.data[1].enemy
+      value: 
+      objectReference: {fileID: 3901025928255337147, guid: 8478edebd2fb10d4bb4e20f129e6769f, type: 3}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: enemies.Array.data[0].chance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: enemies.Array.data[1].chance
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: mySerializableDictionaryList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6276887766260521406, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 276698414}
   m_SourcePrefab: {fileID: 100100000, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
 --- !u!1 &767025931
 GameObject:
