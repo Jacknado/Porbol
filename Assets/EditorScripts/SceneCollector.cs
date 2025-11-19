@@ -130,8 +130,4 @@ public class SceneCollector
             if (ext == l) return true;
         return false;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 4fdbcd059fc6cb8055e4712fb6ec564bad8b69ad
