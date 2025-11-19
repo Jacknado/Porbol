@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         deathCount += 1;
         player.transform.position = new Vector3(0, 0, 0);
         player.GetComponent<WaveTrailSmooth>().RemoveTrail();
+        player.GetComponent<ExplosionPowerup>().Explode(player.transform.position);
+        player.GetComponent<MistyStep>().Disable();
         foreach (Transform child in obstacleFolder.transform)
         {
             child.gameObject.SetActive(true);
