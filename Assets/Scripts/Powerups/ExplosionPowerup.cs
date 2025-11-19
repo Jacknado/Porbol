@@ -1,4 +1,5 @@
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class ExplosionPowerup : MonoBehaviour
@@ -13,9 +14,12 @@ public class ExplosionPowerup : MonoBehaviour
         explosionIndicator.SetActive(false);
         if (GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion)
         {
-            if (hit is MeshCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+            foreach (Collider hit in hits)
             {
-                hit.gameObject.SetActive(false);
+                if (hit is MeshCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+                {
+                    hit.gameObject.SetActive(false);
+                }
             }
             GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion = false;
         }
