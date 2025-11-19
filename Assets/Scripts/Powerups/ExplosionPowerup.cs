@@ -13,12 +13,9 @@ public class ExplosionPowerup : MonoBehaviour
         explosionIndicator.SetActive(false);
         if (GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion)
         {
-            foreach (Collider hit in hits)
+            if (hit is MeshCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
             {
-                if (hit is Collider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
-                {
-                    hit.gameObject.SetActive(false);
-                }
+                hit.gameObject.SetActive(false);
             }
             GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion = false;
         }
