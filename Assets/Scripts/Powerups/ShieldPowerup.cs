@@ -9,8 +9,11 @@ public class ShieldPowerup : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Enable()
     {
-        newShieldSphere = Instantiate(ShieldSphere, transform);
-        active = true;
+        if (!active)
+        {
+            newShieldSphere = Instantiate(ShieldSphere, transform);
+            active = true;
+        }
     }
     public void Disable()
     {
