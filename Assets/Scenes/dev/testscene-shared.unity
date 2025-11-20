@@ -185,7 +185,7 @@ PrefabInstance:
     - target: {fileID: 1061982986739833548, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: deathEffect
       value: 
-      objectReference: {fileID: 783850711}
+      objectReference: {fileID: 0}
     - target: {fileID: 3192212096078763247, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.size
       value: 2
@@ -197,6 +197,10 @@ PrefabInstance:
     - target: {fileID: 5309382339808210549, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: m_Name
       value: PlayerPack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894640346915035984, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: destroyableLayer.m_Bits
+      value: 129
       objectReference: {fileID: 0}
     - target: {fileID: 7441401609394109275, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -256,7 +260,7 @@ PrefabInstance:
       objectReference: {fileID: 3901025928255337147, guid: 8478edebd2fb10d4bb4e20f129e6769f, type: 3}
     - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: enemies.Array.data[0].chance
-      value: 50
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9081362310751386440, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: enemies.Array.data[1].chance
