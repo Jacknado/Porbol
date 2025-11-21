@@ -91,20 +91,17 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
-
-    public void StartGame()
+    public void ShowTut()
     {
         fadeController.transform.Find("Name").gameObject.SetActive(false);
-        StartCoroutine(ButtonStartGame());
+        transform.parent.Find("Canvas (1)").Find("HowToPlay").gameObject.SetActive(true);
+        transform.parent.Find("Canvas (1)").Find("Button").gameObject.SetActive(false);
+        transform.parent.Find("Canvas (1)").GetComponent<Canvas>().sortingOrder = 100;
+        fadeController.FadeToBlack();   
     }
-    IEnumerator ButtonStartGame()
+    public void StartGame()
     {
-        fadeController.FadeToBlack();
-        yield return new WaitForSeconds(1f);
-        // Get the build index of the currently active scene
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Load the scene with the next build index
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 }
