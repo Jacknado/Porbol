@@ -18,4 +18,9 @@ public class Enemy : MonoBehaviour
         if (target != null)
             agent.SetDestination(target.position);
     }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        agent.speed = 0;
+    }
 }

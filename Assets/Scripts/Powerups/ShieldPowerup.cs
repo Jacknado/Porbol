@@ -24,7 +24,7 @@ public class ShieldPowerup : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (active && !other.gameObject.name.EndsWith("Powerup") && other.gameObject.name != "PolyShape")
+        if (active && !other.gameObject.name.EndsWith("Powerup") && other.gameObject.name != "MeleeShower")
         {
             Destroy(other.gameObject);
             Disable();
