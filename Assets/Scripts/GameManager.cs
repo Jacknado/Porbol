@@ -6,8 +6,10 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour
 {
+    public GameObject nextLevel;
     private GameObject obstacleFolder;
     private GameObject player;
     private FadeController fadeController;
@@ -89,7 +91,8 @@ public class GameManager : MonoBehaviour
     {
         fadeController.FadeToBlack();
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        nextLevel.GetComponent<TextMeshProUGUI>().text = $"CONGRATULATUIONS \n YOU BEAT MY LEVEL \n YOU TOOK {deathCount + 1} ATEMPTS";
+        nextLevel.SetActive(true);
     }
 
     public void StartGame()
@@ -101,7 +104,9 @@ public class GameManager : MonoBehaviour
     {
         fadeController.FadeToBlack();
         yield return new WaitForSeconds(1f);
-        // Get the build index of the currently active scene
+    }
+    public void Continue()
+    {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         // Load the scene with the next build index
