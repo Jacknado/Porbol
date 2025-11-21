@@ -1,33 +1,46 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShieldPowerup : MonoBehaviour
 {
-    public GameObject ShieldSphere;
-    private bool active;
-    private GameObject newShieldSphere;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject shieldSphere;
+
+    private bool isActive;
+    private GameObject activeShieldSphere;
+
     public void Enable()
     {
-        if (!active)
-        {
-            newShieldSphere = Instantiate(ShieldSphere, transform);
-            active = true;
-        }
+        if (isActive || shieldSphere == null)
+            return;
+
+        activeShieldSphere = Instantiate(shieldSphere, transform);
+        isActive = true;
     }
+
     public void Disable()
     {
-        if (newShieldSphere){
-            Destroy(newShieldSphere);
+        if (!isActive)
+            return;
+
+        if (activeShieldSphere != null)
+        {
+            Destroy(activeShieldSphere);
         }
-        active = false;
+        
+        activeShieldSphere = null;
+        isActive = false;
     }
+
     void OnTriggerEnter(Collider other)
     {
-        if (active && !other.gameObject.name.EndsWith("Powerup") && other.gameObject.name != "MeleeShower")
-        {
-            Destroy(other.gameObject);
-            Disable();
-        }
+        if (!isActive)
+            return;
+
+        string objName = other.gameObject.name;
+        
+        if (objName.EndsWith("Powerup") || objName == "MeleeShower")
+            return;
+
+        Destroy(other.gameObject);
+        Disable();
     }
 }

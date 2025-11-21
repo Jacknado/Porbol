@@ -1,35 +1,58 @@
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class ExplosionPowerup : MonoBehaviour
 {
     public float explosionRadius = 5f;
     public LayerMask destroyableLayer;
-    private GameObject explosionIndicator;
 
-    public void Explode(Vector3 position)
-    {
-        Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
-        explosionIndicator.SetActive(false);
-        if (GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion)
-        {
-            foreach (Collider hit in hits)
-            {
-                if (hit is Collider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0 && hit.name != "ShieldSphere(Clone)" && hit.name != "PolyShape")
-                {
-                    hit.gameObject.SetActive(false);
-                }
-            }
-            GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion = false;
-        }
-    }
+    private GameObject explosionIndicator;
+    private PlayerController playerController;
+
     void Start()
     {
         explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
+        playerController = GetComponent<PlayerController>();
     }
-    // Optional: visualize explosion radius in editor
-    private void OnDrawGizmosSelected()
+
+    public void Explode(Vector3 position)
+    {
+        if (playerController == null || !playerController.hasExplosion)
+            return;
+
+        Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
+        
+        if (explosionIndicator != null)
+        {
+            explosionIndicator.SetActive(false);
+        }
+
+        foreach (Collider hit in hits)
+        {
+            if (ShouldDestroyObject(hit))
+            {
+                hit.gameObject.SetActive(false);
+            }
+        }
+
+        playerController.hasExplosion = false;
+    }
+
+    private bool ShouldDestroyObject(Collider hit)
+    {
+        if (hit == null)
+            return false;
+
+        if (((1 << hit.gameObject.layer) & destroyableLayer) == 0)
+            return false;
+
+        string objName = hit.gameObject.name;
+        if (objName == "ShieldSphere(Clone)" || objName == "PolyShape")
+            return false;
+
+        return true;
+    }
+
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, explosionRadius);

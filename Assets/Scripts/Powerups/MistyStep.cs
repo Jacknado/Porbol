@@ -1,39 +1,49 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MistyStep : MonoBehaviour
 {
     public float distance = 5f;
-    public GameObject TargetBlock;
-    private bool active;
-    private GameObject newTargetBlock;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject targetBlock;
+
+    private bool isActive;
+    private GameObject activeTargetBlock;
+    private PlayerController playerController;
+
+    void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
+
     public void Enable()
     {
-        if (!active)
-        {
-            Vector3 startLoc = GameObject.Find("Player").transform.position;
-            Vector3 finalLoc = new Vector3(startLoc.x + distance, startLoc.y, startLoc.z);
-            newTargetBlock = Instantiate(TargetBlock, finalLoc, transform.rotation, transform);
-            active = true;
-        }
+        if (isActive || targetBlock == null)
+            return;
+
+        Vector3 startLoc = transform.position;
+        Vector3 finalLoc = new Vector3(startLoc.x + distance, startLoc.y, startLoc.z);
+        
+        activeTargetBlock = Instantiate(targetBlock, finalLoc, transform.rotation, transform);
+        isActive = true;
     }
+
     public void Disable()
     {
-        if(active)
-        {
-            Destroy(newTargetBlock);
-            active = false;
-        }
+        if (!isActive || activeTargetBlock == null)
+            return;
+
+        Destroy(activeTargetBlock);
+        activeTargetBlock = null;
+        isActive = false;
     }
+
     public void Step(Vector3 position)
     {
+        if (playerController == null || !playerController.hasStep || activeTargetBlock == null)
+            return;
+
+        transform.position = activeTargetBlock.transform.position;
+        playerController.hasStep = false;
+        
         Disable();
-        if (GameObject.Find("Player").GetComponent<PlayerController>().hasStep)
-        {
-            GameObject.Find("Player").transform.position = newTargetBlock.transform.position; 
-            GameObject.Find("Player").GetComponent<PlayerController>().hasStep = false;
-        }
     }
 }

@@ -5,27 +5,22 @@ using UnityEngine;
 public class ObstacleSpawner : MonoBehaviour
 {
     public GameObject obstacleFolder;
-    [Header("Prefabs")]
     public List<GameObject> obstaclePrefabs;
     public List<GameObject> powerupPrefabs;
 
-    [Header("Spawn Area")]
     public float minX = 10f;
     public float maxX = 300f;
     public float minZ = -15f;
     public float maxZ = 15f;
     public float spawnY = 0f;
 
-    [Header("Spacing & Attempts")]
     public int seed = 42;
     public float collisionRadius = 2f;
     public int maxPlacementAttempts = 1000;
 
-    [Header("Powerup Settings")]
     [Range(0f, 1f)]
     public float powerupPercentage = 0.05f;
 
-    [Header("NavMesh")]
     public NavMeshSurface navMeshSurface;
 
     private List<GameObject> spawnedObstacles = new List<GameObject>();
@@ -39,8 +34,8 @@ public class ObstacleSpawner : MonoBehaviour
 
     void SpawnUntilFull()
     {
-        var previousState = UnityEngine.Random.state;
-        Random.InitState(seed); 
+        Random.State previousState = Random.state;
+        Random.InitState(seed);
         int failedAttempts = 0;
 
         while (failedAttempts < maxPlacementAttempts)
@@ -50,8 +45,6 @@ public class ObstacleSpawner : MonoBehaviour
                 spawnY,
                 Random.Range(minZ, maxZ)
             );
-
-            Quaternion rot = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
 
             Collider[] hits = Physics.OverlapSphere(pos, collisionRadius);
 
@@ -67,15 +60,15 @@ public class ObstacleSpawner : MonoBehaviour
                 failedAttempts++;
             }
         }
+        
         Random.state = previousState;
-
         Debug.Log($"ObstacleSpawner: Placed {spawnedObstacles.Count} obstacles before area filled.");
     }
 
     void ReplaceWithPowerups()
     {
-
-        if (powerupPrefabs == null || spawnedObstacles.Count == 0) return;
+        if (powerupPrefabs == null || powerupPrefabs.Count == 0 || spawnedObstacles.Count == 0)
+            return;
 
         int powerupCount = Mathf.RoundToInt(spawnedObstacles.Count * powerupPercentage);
         powerupCount = Mathf.Clamp(powerupCount, 0, spawnedObstacles.Count);
@@ -97,6 +90,7 @@ public class ObstacleSpawner : MonoBehaviour
             Vector3 pos = oldObstacle.transform.position;
 
             Destroy(oldObstacle);
+            
             int randomPowerup = Random.Range(0, powerupPrefabs.Count);
             GameObject powerup = Instantiate(powerupPrefabs[randomPowerup], pos, Quaternion.identity, obstacleFolder.transform);
             powerup.name = powerupPrefabs[randomPowerup].name;
