@@ -94,22 +94,17 @@ public class GameManager : MonoBehaviour
         nextLevel.GetComponent<TextMeshProUGUI>().text = $"CONGRATULATUIONS \n YOU BEAT MY LEVEL \n YOU TOOK {deathCount + 1} ATEMPTS";
         nextLevel.SetActive(true);
     }
-
-    public void StartGame()
+    public void ShowTut()
     {
         fadeController.transform.Find("Name").gameObject.SetActive(false);
-        StartCoroutine(ButtonStartGame());
+        transform.parent.Find("Canvas (1)").Find("HowToPlay").gameObject.SetActive(true);
+        transform.parent.Find("Canvas (1)").Find("Button").gameObject.SetActive(false);
+        transform.parent.Find("Canvas (1)").GetComponent<Canvas>().sortingOrder = 100;
+        fadeController.FadeToBlack();   
     }
-    IEnumerator ButtonStartGame()
-    {
-        fadeController.FadeToBlack();
-        yield return new WaitForSeconds(1f);
-    }
-    public void Continue()
+    public void StartGame()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        // Load the scene with the next build index
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 }
