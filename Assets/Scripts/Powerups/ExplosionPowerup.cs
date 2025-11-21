@@ -16,7 +16,7 @@ public class ExplosionPowerup : MonoBehaviour
         {
             foreach (Collider hit in hits)
             {
-                if (hit is Collider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
+                if (hit is Collider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0 && hit.name != "ShieldSphere(Clone)" && hit.name != "PolyShape")
                 {
                     hit.gameObject.SetActive(false);
                 }

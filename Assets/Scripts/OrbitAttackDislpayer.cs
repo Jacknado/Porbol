@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class OrbitAttackDisplayer : MonoBehaviour
 {
     public Transform centerPoint;
@@ -7,7 +7,7 @@ public class OrbitAttackDisplayer : MonoBehaviour
 
     private float startOffsetAngle;
     public float OffsetAngle;
-
+    private float cooldown;
     void Start()
     {
         Camera cam = Camera.main;
@@ -33,5 +33,27 @@ public class OrbitAttackDisplayer : MonoBehaviour
 
         Quaternion targetRot = Quaternion.Euler(0f, finalAngle, 0f);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * rotationSmooth);
+        transform.position = centerPoint.transform.position;
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.name.StartsWith("FastEnemy"))
+        {
+            //Debug.Log("staying");
+            if (Input.GetMouseButtonDown(0) && cooldown == 0)
+            {
+                //meleeShower.GetComponent<Material>().
+                Destroy(other.gameObject);
+                meleeCooldown();
+            }
+        }
+    }
+
+    private IEnumerator meleeCooldown()
+    {
+        cooldown = 1.5f;
+        yield return new WaitForSeconds(cooldown);
+        cooldown = 0;
     }
 }

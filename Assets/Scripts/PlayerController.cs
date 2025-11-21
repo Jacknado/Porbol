@@ -19,14 +19,11 @@ public class PlayerController : MonoBehaviour
     private ExplosionPowerup explosionPowerup;
     private MistyStep mistyStep;
     private GameObject explosionIndicator;
-    private GameObject meleeRange;
-    private float cooldown = 0;
     void Start()
     {
         shieldPowerup = gameObject.GetComponent<ShieldPowerup>();
         explosionPowerup = gameObject.GetComponent<ExplosionPowerup>();
         mistyStep = gameObject.GetComponent<MistyStep>();
-        meleeRange = transform.Find("MeleeShower").GetChild(0).gameObject;
         explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
         gameManager = transform.parent.GetComponent<GameManager>();
     }
@@ -79,23 +76,5 @@ public class PlayerController : MonoBehaviour
         }  
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.name.StartsWith("FastEnemy"))
-        {
-            //Debug.Log("staying");
-            if (Input.GetMouseButtonDown(0) && cooldown == 0)
-            {
-                Destroy(other.gameObject);
-                meleeCooldown();
-            }
-        }
-    }
-
-    private IEnumerator meleeCooldown()
-    {
-        cooldown = 1.5f;
-        yield return new WaitForSeconds(cooldown);
-        cooldown = 0;
-    }
+    
 }

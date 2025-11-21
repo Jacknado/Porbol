@@ -17,12 +17,14 @@ public class ShieldPowerup : MonoBehaviour
     }
     public void Disable()
     {
-        Destroy(newShieldSphere);
+        if (newShieldSphere){
+            Destroy(newShieldSphere);
+        }
         active = false;
     }
     void OnTriggerEnter(Collider other)
     {
-        if (active && !other.gameObject.name.EndsWith("Powerup"))
+        if (active && !other.gameObject.name.EndsWith("Powerup") && other.gameObject.name != "PolyShape")
         {
             Destroy(other.gameObject);
             Disable();
