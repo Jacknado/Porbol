@@ -5,13 +5,13 @@ using System.Collections.Generic;
 public class OrbitAttackDisplayer : MonoBehaviour
 {
     public Transform centerPoint;
+    public GameObject waveMesh;
     public float rotationSmooth = 15f;
     public float offsetAngle;
     public float meleeCooldownDuration = 1.5f;
 
     private float startOffsetAngle;
     private bool isOnCooldown = false;
-    private List<GameObject> enemiesInRange = new List<GameObject>();
     private MeshRenderer meshRenderer;
 
     void Start()
@@ -45,44 +45,24 @@ public class OrbitAttackDisplayer : MonoBehaviour
 
         if (!isOnCooldown && Input.GetMouseButtonDown(0))
         {
-            TryAttack();
+            TryAttack(finalAngle);
         }
     }
 
-    private void TryAttack()
+    private void TryAttack(float finalAngle)
     {
-        if (enemiesInRange.Count == 0)
-            return;
+        Quaternion rot = Quaternion.Euler(-90f, finalAngle, 0f);
 
-        GameObject target = FindClosestEnemy();
-        
-        if (target != null)
-        {
-            Destroy(target);
-            enemiesInRange.Remove(target);
-            StartCoroutine(HandleMeleeCooldown());
-        }
-    }
+        // This is the offset in the mesh's LOCAL SPACE
+        Vector3 localOffset = new Vector3(-2f, 0.5f, 0f); 
+        // ^ move left/right depending on your model's actual offset direction
 
-    private GameObject FindClosestEnemy()
-    {
-        GameObject closest = null;
-        float closestDist = float.MaxValue;
+        // Convert local offset to world-space offset
+        Vector3 worldOffset = rot * localOffset;
 
-        foreach (GameObject e in enemiesInRange)
-        {
-            if (e == null)
-                continue;
+        Instantiate(waveMesh, centerPoint.position - worldOffset, rot);
 
-            float d = Vector3.Distance(transform.position, e.transform.position);
-            if (d < closestDist)
-            {
-                closestDist = d;
-                closest = e;
-            }
-        }
-
-        return closest;
+        StartCoroutine(HandleMeleeCooldown());
     }
 
     private IEnumerator HandleMeleeCooldown()
@@ -102,29 +82,5 @@ public class OrbitAttackDisplayer : MonoBehaviour
         }
         
         isOnCooldown = false;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.name.Contains("FastEnemy"))
-        {
-            if (!enemiesInRange.Contains(other.gameObject))
-            {
-                enemiesInRange.Add(other.gameObject);
-            }
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (enemiesInRange.Contains(other.gameObject))
-        {
-            enemiesInRange.Remove(other.gameObject);
-        }
-    }
-
-    void LateUpdate()
-    {
-        enemiesInRange.RemoveAll(e => e == null);
     }
 }

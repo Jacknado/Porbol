@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Border"))
+        if (collision.gameObject.CompareTag("Border") || collision.gameObject.name.Contains("WaveMesh"))
             return;
 
         if (collision.gameObject.name == "ShieldPowerup")
