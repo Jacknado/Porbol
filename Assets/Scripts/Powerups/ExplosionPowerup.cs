@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class ExplosionPowerup : MonoBehaviour
 {
     public float explosionRadius = 5f;
     public LayerMask destroyableLayer;
+    public GameObject explosionSpherePrefab; // Assign your sphere prefab here
 
     private GameObject explosionIndicator;
     private PlayerController playerController;
@@ -19,8 +21,11 @@ public class ExplosionPowerup : MonoBehaviour
         if (playerController == null || !playerController.hasExplosion)
             return;
 
-        Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
+        // Spawn and animate the explosion sphere
         
+
+        Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
+
         if (explosionIndicator != null)
         {
             explosionIndicator.SetActive(false);
@@ -33,8 +38,55 @@ public class ExplosionPowerup : MonoBehaviour
                 hit.gameObject.SetActive(false);
             }
         }
+        if (explosionSpherePrefab != null)
+        {
+            GameObject sphere = Instantiate(explosionSpherePrefab, position, Quaternion.identity);
+            StartCoroutine(AnimateExplosionSphere(sphere));
+        }
 
         playerController.hasExplosion = false;
+    }
+
+    private IEnumerator AnimateExplosionSphere(GameObject sphere)
+    {
+        float duration = 0.3f; // How fast it expands and fades
+        float timer = 0f;
+
+        Vector3 startScale = Vector3.one;
+        Vector3 targetScale = Vector3.one * explosionRadius * 2f; // Diameter
+
+        Renderer rend = sphere.GetComponent<Renderer>();
+        Material mat = null;
+        Color originalColor = Color.white;
+
+        if (rend != null)
+        {
+            mat = rend.material;
+            originalColor = mat.color;
+            Color c = originalColor;
+            c.a = 1f;
+            mat.color = c;
+        }
+
+        // Expand sphere
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / duration;
+
+            sphere.transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+
+            if (mat != null)
+            {
+                Color c = originalColor;
+                c.a = Mathf.Lerp(1f, 0f, t); // Fade alpha from 1 to 0
+                mat.color = c;
+            }
+
+            yield return null;
+        }
+
+        Destroy(sphere);
     }
 
     private bool ShouldDestroyObject(Collider hit)

@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float forwardSpeed = 5f;
     public bool hasExplosion;
     public bool hasStep;
-    public ParticleSystem deathEffect;
+    public GameObject deathEffect;
 
     private GameManager gameManager;
     private ShieldPowerup shieldPowerup;
@@ -129,8 +130,7 @@ public class PlayerController : MonoBehaviour
 
         if (deathEffect != null)
         {
-            deathEffect.time = 0;
-            deathEffect.Play();
+            Instantiate(deathEffect, transform.position, deathEffect.transform.rotation);
         }
     }
 }

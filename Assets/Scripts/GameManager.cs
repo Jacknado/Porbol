@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private int deathCount = 0;
     private bool isRespawning = false;
     private bool beatLevel = false;
+    private GameObject bigWave;
+    private Vector3 bigWaveStartingPos;
     
     void Start()
     {
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
         fadeController = transform.parent.Find("Canvas").GetComponent<FadeController>();
         obstacleFolder = transform.parent.Find("ObstacleFolder").gameObject;
         highScoreText = transform.parent.Find("Canvas").Find("HighScoreText").GetComponent<TextMeshProUGUI>();
+        bigWave = transform.parent.Find("Wave").GetChild(0).gameObject;
         
         if (isMainMenu)
         {
@@ -32,6 +35,7 @@ public class GameManager : MonoBehaviour
         else
         {
             fadeController.StartLevel();
+            bigWaveStartingPos = bigWave.transform.position;
         }
     }
     
@@ -81,6 +85,7 @@ public class GameManager : MonoBehaviour
 
         fadeController.FadeFromBlack();
         isDead = false;
+        bigWave.transform.position = bigWaveStartingPos;
         yield return new WaitForSeconds(1);
         
         isRespawning = false;
