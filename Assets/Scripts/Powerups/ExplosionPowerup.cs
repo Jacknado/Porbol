@@ -98,7 +98,7 @@ public class ExplosionPowerup : MonoBehaviour
             return false;
 
         string objName = hit.gameObject.name;
-        if (objName == "ShieldSphere(Clone)" || objName == "PolyShape")
+        if (objName == "ShieldSphere(Clone)" || objName == "PolyShape" || objName.Contains("Coin"))
             return false;
 
         return true;

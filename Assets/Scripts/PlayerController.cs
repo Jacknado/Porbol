@@ -86,12 +86,16 @@ public class PlayerController : MonoBehaviour
         {
             HandleMistyStepPickup(collision.gameObject);
         }
+        else if (collision.gameObject.name.Contains("Coin"))
+        {
+            gameManager.coins += 1;
+            collision.gameObject.SetActive(false);
+        }
         else
         {
             HandleDeath();
         }
     }
-
     void HandleShieldPickup(GameObject powerup)
     {
         if (shieldPowerup != null)

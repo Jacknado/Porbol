@@ -7,6 +7,7 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject obstacleFolder;
     public List<GameObject> obstaclePrefabs;
     public List<GameObject> powerupPrefabs;
+    public List<GameObject> coinPrefabs;
 
     public float minX = 10f;
     public float maxX = 300f;
@@ -20,6 +21,9 @@ public class ObstacleSpawner : MonoBehaviour
 
     [Range(0f, 1f)]
     public float powerupPercentage = 0.05f;
+    
+    [Range(0f, 1f)]
+    public float coinPercentage = 0.1f;
 
     public NavMeshSurface navMeshSurface;
 
@@ -29,6 +33,7 @@ public class ObstacleSpawner : MonoBehaviour
     {
         SpawnUntilFull();
         ReplaceWithPowerups();
+        ReplaceWithCoins();
         BuildNavMesh();
     }
 
@@ -82,7 +87,7 @@ public class ObstacleSpawner : MonoBehaviour
             {
                 index = Random.Range(0, spawnedObstacles.Count);
             } 
-            while (replacedIndices.Contains(index));
+            while (replacedIndices.Contains(index) || spawnedObstacles[index] == null);
 
             replacedIndices.Add(index);
 
@@ -94,9 +99,47 @@ public class ObstacleSpawner : MonoBehaviour
             int randomPowerup = Random.Range(0, powerupPrefabs.Count);
             GameObject powerup = Instantiate(powerupPrefabs[randomPowerup], pos, Quaternion.identity, obstacleFolder.transform);
             powerup.name = powerupPrefabs[randomPowerup].name;
+            
+            spawnedObstacles[index] = null;
         }
 
         Debug.Log($"ObstacleSpawner: Replaced {powerupCount} obstacles with powerups.");
+    }
+
+    void ReplaceWithCoins()
+    {
+        if (coinPrefabs == null || coinPrefabs.Count == 0 || spawnedObstacles.Count == 0)
+            return;
+
+        int coinCount = Mathf.RoundToInt(spawnedObstacles.Count * coinPercentage);
+        coinCount = Mathf.Clamp(coinCount, 0, spawnedObstacles.Count);
+
+        HashSet<int> replacedIndices = new HashSet<int>();
+
+        for (int i = 0; i < coinCount; i++)
+        {
+            int index;
+            do
+            {
+                index = Random.Range(0, spawnedObstacles.Count);
+            } 
+            while (replacedIndices.Contains(index) || spawnedObstacles[index] == null);
+
+            replacedIndices.Add(index);
+
+            GameObject oldObstacle = spawnedObstacles[index];
+            Vector3 pos = oldObstacle.transform.position;
+
+            Destroy(oldObstacle);
+            
+            int randomCoin = Random.Range(0, coinPrefabs.Count);
+            GameObject coin = Instantiate(coinPrefabs[randomCoin], pos, Quaternion.identity, obstacleFolder.transform);
+            coin.name = coinPrefabs[randomCoin].name;
+            
+            spawnedObstacles[index] = null;
+        }
+
+        Debug.Log($"ObstacleSpawner: Replaced {coinCount} obstacles with coins.");
     }
 
     void BuildNavMesh()

@@ -37,7 +37,7 @@ public class ShieldPowerup : MonoBehaviour
 
         string objName = other.gameObject.name;
         
-        if (objName.EndsWith("Powerup") || objName == "MeleeShower" || objName.Contains("Wave"))
+        if (objName.EndsWith("Powerup") || objName == "MeleeShower" || objName.Contains("Wave") || objName.Contains("Coin"))
             return;
 
         Destroy(other.gameObject);

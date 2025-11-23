@@ -6,7 +6,7 @@ public class FadeController : MonoBehaviour
 {
     public Image fadeImage;
     public float fadeDuration = 1.0f;
-    public float mainMenuDelay = 2f;
+    public float mainMenuDelay = 2.1f;
     public float levelStartDelay = 0.5f;
     public bool mainMenuFirst = true;
 

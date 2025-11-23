@@ -9,11 +9,13 @@ public class GameManager : MonoBehaviour
     public GameObject nextLevel;
     public bool isMainMenu;
     public bool isDead;
+    public int coins;
 
     private GameObject obstacleFolder;
     private GameObject player;
     private FadeController fadeController;
     private TextMeshProUGUI highScoreText;
+    private TextMeshProUGUI coinText;
     private int deathCount = 0;
     private bool isRespawning = false;
     private bool beatLevel = false;
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
         fadeController = transform.parent.Find("Canvas").GetComponent<FadeController>();
         obstacleFolder = transform.parent.Find("ObstacleFolder").gameObject;
         highScoreText = transform.parent.Find("Canvas").Find("HighScoreText").GetComponent<TextMeshProUGUI>();
+        coinText = transform.parent.Find("Canvas").Find("CoinText").GetComponent<TextMeshProUGUI>();
         bigWave = transform.parent.Find("Wave").GetChild(0).gameObject;
         
         if (isMainMenu)
@@ -43,7 +46,11 @@ public class GameManager : MonoBehaviour
     {
         if (highScoreText != null && player != null)
         {
-            highScoreText.text = "Score\n" + Mathf.Round(player.transform.position.x / 3) + "/100";
+            highScoreText.text = "Score " + Mathf.Round(player.transform.position.x / 3) + "/100";
+        }
+        if (coinText != null && player != null)
+        {
+            coinText.text = "Coins " + coins;
         }
 
         if (isDead && !isRespawning)
@@ -62,7 +69,7 @@ public class GameManager : MonoBehaviour
         isRespawning = true;
         fadeController.FadeToBlack();
         yield return new WaitForSeconds(1.5f);
-
+        coins = 0;
         deathCount += 1;
         player.transform.position = Vector3.zero;
         player.GetComponent<WaveTrailSmooth>().RemoveTrail();
@@ -104,7 +111,7 @@ public class GameManager : MonoBehaviour
             TextMeshProUGUI nextLevelText = nextLevel.GetComponent<TextMeshProUGUI>();
             if (nextLevelText != null)
             {
-                nextLevelText.text = $"CONGRATULATIONS\nYOU BEAT MY LEVEL\nYOU TOOK {deathCount + 1} ATTEMPTS";
+                nextLevelText.text = $"CONGRATULATIONS\nYOU BEAT THE LEVEL\nYOU TOOK {deathCount + 1} ATTEMPTS\nYOU COLLECTED {coins} COINS";
             }
             nextLevel.SetActive(true);
         }
