@@ -46,7 +46,7 @@ public class GameProgress : MonoBehaviour
             replay = true;
         }
     }
-    // LevelSelector must be enabled when game complete. Coin count must be set to level currently selected.
+    
     public void EndScene(int collectedCoins, int numAttempts)
     {
         if(replay)
@@ -64,6 +64,6 @@ public class GameProgress : MonoBehaviour
     }
     public void GameFinished()
     {
-        gameFinished = false;
+        gameFinished = true;
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -105,6 +106,7 @@ public class GameManager : MonoBehaviour
         highScoreText.gameObject.SetActive(false);
         fadeController.transform.Find("ExplosionIndicator").gameObject.SetActive(false);
         beatLevel = true;
+        GameObject.Find("GameProgress").GetComponent<GameProgress>().EndScene(coins, deathCount + 1);
         fadeController.FadeToBlack();
         yield return new WaitForSeconds(1.5f);
         
@@ -135,6 +137,7 @@ public class GameManager : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         if (currentSceneIndex == 7) {
+            GameObject.Find("GameProgress").GetComponent<GameProgress>().GameFinished();
             SceneManager.LoadScene(0);
         }
         else
