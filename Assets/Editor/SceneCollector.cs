@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System.Collections.Generic;
-// Ham
+using System.Linq;
+
 public class SceneCollector : Editor
 {
     [MenuItem("Tools/Collect Current Scene Assets (Full Self-Contained + Sorted + Deep Relink)")]
@@ -33,6 +34,7 @@ public class SceneCollector : Editor
 
         int copied = 0;
         Dictionary<string, string> guidMap = new Dictionary<string, string>();
+        Dictionary<string, string> pathMap = new Dictionary<string, string>();
 
         // === Copy assets and map GUIDs ===
         foreach (string path in deps)
@@ -58,7 +60,10 @@ public class SceneCollector : Editor
                 string oldGuid = AssetDatabase.AssetPathToGUID(path);
                 string newGuid = AssetDatabase.AssetPathToGUID(destPath);
                 if (!string.IsNullOrEmpty(oldGuid) && !string.IsNullOrEmpty(newGuid))
+                {
                     guidMap[oldGuid] = newGuid;
+                    pathMap[path] = destPath;
+                }
             }
         }
 
@@ -92,8 +97,70 @@ public class SceneCollector : Editor
 
         AssetDatabase.Refresh();
 
+        // === Fix mesh renderer texture references ===
+        // Load the copied scene and fix any mesh renderers that have lost their textures
+        var copiedScene = EditorSceneManager.OpenScene(sceneDest, OpenSceneMode.Additive);
+        
+        var meshRenderers = Object.FindObjectsOfType<MeshRenderer>();
+        var skinnedMeshRenderers = Object.FindObjectsOfType<SkinnedMeshRenderer>();
+        
+        bool sceneModified = false;
+        
+        // Check MeshRenderers
+        foreach (var mr in meshRenderers)
+        {
+            if (mr.gameObject.scene == copiedScene && FixRendererMaterials(mr, pathMap))
+                sceneModified = true;
+        }
+        
+        // Check SkinnedMeshRenderers
+        foreach (var smr in skinnedMeshRenderers)
+        {
+            if (smr.gameObject.scene == copiedScene && FixRendererMaterials(smr, pathMap))
+                sceneModified = true;
+        }
+
+        if (sceneModified)
+        {
+            EditorSceneManager.SaveScene(copiedScene);
+        }
+        
+        EditorSceneManager.CloseScene(copiedScene, true);
+
         Debug.Log($"✅ Scene '{sceneName}' fully collected and deep-relinked into '{outputFolder}'.");
         Debug.Log($"📦 {copied} dependent assets copied, including materials and textures.");
+    }
+
+    // === Fix renderer materials to point to new asset locations ===
+    static bool FixRendererMaterials(Renderer renderer, Dictionary<string, string> pathMap)
+    {
+        bool modified = false;
+        Material[] materials = renderer.sharedMaterials;
+        
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if (materials[i] != null)
+            {
+                string matPath = AssetDatabase.GetAssetPath(materials[i]);
+                if (!string.IsNullOrEmpty(matPath) && pathMap.ContainsKey(matPath))
+                {
+                    // Material exists in old location, update to new location
+                    Material newMat = AssetDatabase.LoadAssetAtPath<Material>(pathMap[matPath]);
+                    if (newMat != null)
+                    {
+                        materials[i] = newMat;
+                        modified = true;
+                    }
+                }
+            }
+        }
+        
+        if (modified)
+        {
+            renderer.sharedMaterials = materials;
+        }
+        
+        return modified;
     }
 
     // === Helpers ===
