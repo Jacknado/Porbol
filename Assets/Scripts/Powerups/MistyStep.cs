@@ -1,36 +1,52 @@
-using Unity.VisualScripting;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class MistyStep : MonoBehaviour
 {
-    public float explosionRadius = 5f;
-    public LayerMask destroyableLayer;
-    private GameObject explosionIndicator;
+    public float distance = 5f;
+    public GameObject targetBlock;
+    public GameObject renderImage;
+
+    private bool isActive;
+    private GameObject activeTargetBlock;
+    private PlayerController playerController;
+
+    void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
+
+    public void Enable()
+    {
+        if (isActive || targetBlock == null)
+            return;
+        renderImage.SetActive(true);
+        Vector3 startLoc = transform.position;
+        Vector3 finalLoc = new Vector3(startLoc.x + distance, startLoc.y + 0.00001f, startLoc.z);
+        
+        activeTargetBlock = Instantiate(targetBlock, finalLoc, transform.rotation, transform);
+        isActive = true;
+    }
+
+    public void Disable()
+    {
+        renderImage.SetActive(false);
+        if (!isActive || activeTargetBlock == null)
+            return;
+
+        Destroy(activeTargetBlock);
+        activeTargetBlock = null;
+        isActive = false;
+    }
 
     public void Step(Vector3 position)
     {
-        Collider[] hits = Physics.OverlapSphere(position, explosionRadius);
-        explosionIndicator.SetActive(false);
-        if (GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion)
-        {
-            foreach (Collider hit in hits)
-            {
-                if (hit is BoxCollider && ((1 << hit.gameObject.layer) & destroyableLayer) != 0)
-                {
-                    hit.gameObject.SetActive(false);
-                }
-            }
-            GameObject.Find("Player").GetComponent<PlayerController>().hasExplosion = false;
-        }
-    }
-    void Start()
-    {
-        explosionIndicator = transform.parent.parent.Find("Canvas").Find("ExplosionIndicator").gameObject;
-    }
-    // Optional: visualize explosion radius in editor
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(1, 1, 1, 0.25f);
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
+        if (playerController == null || !playerController.hasStep || activeTargetBlock == null)
+            return;
+
+        transform.position = activeTargetBlock.transform.position - new Vector3(0, 0.00001f, 0);
+        playerController.hasStep = false;
+        
+        Disable();
     }
 }
