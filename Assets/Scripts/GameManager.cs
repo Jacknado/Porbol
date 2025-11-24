@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject nextLevel;
+    public GameObject levelDropdown;
     public bool isMainMenu;
     public bool isDead;
     public int coins;
@@ -73,7 +75,7 @@ public class GameManager : MonoBehaviour
         deathCount += 1;
         player.transform.position = Vector3.zero;
         player.GetComponent<WaveTrailSmooth>().RemoveTrail();
-        player.GetComponent<ExplosionPowerup>().Explode(player.transform.position);
+        player.GetComponent<ExplosionPowerup>().Explode(player.transform.position, true);
         player.GetComponent<MistyStep>().Disable();
 
         foreach (Transform child in obstacleFolder.transform)
@@ -132,6 +134,19 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex + 1);
+        if (currentSceneIndex == 7) {
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
+    }
+
+    public void GoToLevel()
+    {
+        char levelToGoTo = levelDropdown.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text.Last();
+        int intValue = (int)char.GetNumericValue(levelToGoTo);
+        SceneManager.LoadScene(intValue);
     }
 }

@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && hasExplosion && explosionPowerup != null)
         {
-            explosionPowerup.Explode(transform.position);
+            explosionPowerup.Explode(transform.position, false);
         }
         else if (Input.GetKeyDown(KeyCode.E) && hasStep && mistyStep != null)
         {

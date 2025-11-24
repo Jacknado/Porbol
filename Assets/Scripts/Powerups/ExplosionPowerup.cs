@@ -16,7 +16,7 @@ public class ExplosionPowerup : MonoBehaviour
         playerController = GetComponent<PlayerController>();
     }
 
-    public void Explode(Vector3 position)
+    public void Explode(Vector3 position, bool respawn)
     {
         if (playerController == null || !playerController.hasExplosion)
             return;
@@ -38,7 +38,7 @@ public class ExplosionPowerup : MonoBehaviour
                 hit.gameObject.SetActive(false);
             }
         }
-        if (explosionSpherePrefab != null)
+        if (explosionSpherePrefab != null && !respawn)
         {
             GameObject sphere = Instantiate(explosionSpherePrefab, position, Quaternion.identity);
             StartCoroutine(AnimateExplosionSphere(sphere));

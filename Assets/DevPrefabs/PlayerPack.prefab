@@ -5943,7 +5943,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleFolder: {fileID: 855249882605743240}
   obstaclePrefabs:
-  - {fileID: 9034881376952270825, guid: 6a047efede248304d8e3afc934c45b99, type: 3}
+  - prefab: {fileID: 9034881376952270825, guid: 6a047efede248304d8e3afc934c45b99, type: 3}
+    offset: {x: 0, y: 0, z: 0}
+    radius: 2
   powerupPrefabs:
   - {fileID: 2356930827260226451, guid: 882414c9410107c47af46f5bf2f3de8d, type: 3}
   - {fileID: 6525102827336394771, guid: 5275845eac6d4ba4f97e6f8dde4c9fdf, type: 3}
@@ -5955,9 +5957,13 @@ MonoBehaviour:
   minZ: -15
   maxZ: 15
   spawnY: 0
+  powerupY: 0
+  coinY: 0
+  randomRotation: 0
+  rotationMin: {x: 0, y: 0, z: 0}
+  rotationMax: {x: 0, y: 360, z: 0}
   seed: 50
-  collisionRadius: 3
-  maxPlacementAttempts: 200
+  maxPlacementAttempts: 1000
   powerupPercentage: 0.05
   coinPercentage: 0.1
   navMeshSurface: {fileID: 7167107080341165321}
@@ -7054,7 +7060,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2174
+  m_VersionIndex: 2189
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -8272,7 +8278,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5658
+  m_VersionIndex: 5673
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
