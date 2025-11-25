@@ -160,7 +160,10 @@ public class ObstacleSpawner : MonoBehaviour
 
         int count = Mathf.RoundToInt(spawnedObstacles.Count * coinPercentage);
         HashSet<int> used = new HashSet<int>();
-        GameObject.Find("GameProgress").GetComponent<GameProgress>().StartScene(SceneManager.GetActiveScene().buildIndex, count);
+        if (GameObject.Find("GameProgress") != null)
+        {
+            GameObject.Find("GameProgress").GetComponent<GameProgress>().StartScene(SceneManager.GetActiveScene().buildIndex, count);
+        }
         for (int i = 0; i < count; i++)
         {
             int index = GetRandomValidIndex(used);

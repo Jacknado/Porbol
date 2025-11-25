@@ -30,7 +30,10 @@ public class Enemy : MonoBehaviour
 
         if (!hasCollided)
         {
-            agent.SetDestination(target.position);
+            if (agent.isOnNavMesh)
+            {
+                agent.SetDestination(target.position);
+            }
         }
     }
 
