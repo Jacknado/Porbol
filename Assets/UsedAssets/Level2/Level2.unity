@@ -19553,7 +19553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6063521452174511801, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: 6063521452174511801, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19604,6 +19604,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1849092298732552178}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
+      propertyPath: seed
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -19613,7 +19617,7 @@ PrefabInstance:
       objectReference: {fileID: 816268978}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[0].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[1].prefab
@@ -19621,7 +19625,7 @@ PrefabInstance:
       objectReference: {fileID: 849603087}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[1].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[2].prefab
@@ -19629,7 +19633,7 @@ PrefabInstance:
       objectReference: {fileID: 1759907913}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[2].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[3].prefab
@@ -19637,7 +19641,7 @@ PrefabInstance:
       objectReference: {fileID: 1005443767}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[3].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[4].prefab
@@ -19645,7 +19649,7 @@ PrefabInstance:
       objectReference: {fileID: 581178453}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[4].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[5].prefab
@@ -19653,7 +19657,7 @@ PrefabInstance:
       objectReference: {fileID: 761198642}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[5].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[6].prefab
@@ -19661,7 +19665,7 @@ PrefabInstance:
       objectReference: {fileID: 1920218502}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[6].radius
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[0].offset.y
@@ -19677,7 +19681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[3].offset.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8987612609027069941, guid: a038f0702c4eba14a934d9592ce693e5, type: 3}
       propertyPath: obstaclePrefabs.Array.data[4].offset.y
@@ -30065,8 +30069,8 @@ GameObject:
   - component: {fileID: 3178936492209574943}
   - component: {fileID: 7115410080493021461}
   - component: {fileID: 7115410080493021464}
-  - component: {fileID: 7115410080493021463}
   - component: {fileID: 7115410080493021462}
+  - component: {fileID: 7115410080493021465}
   m_Layer: 0
   m_Name: FastEnemy
   m_TagString: Untagged
@@ -30234,7 +30238,7 @@ GameObject:
   - component: {fileID: 3955698627846224694}
   - component: {fileID: 7815340514669542703}
   - component: {fileID: 7815340514669542702}
-  - component: {fileID: 7815340514669542701}
+  - component: {fileID: 7815340514669542704}
   m_Layer: 0
   m_Name: SlowEnemy
   m_TagString: Untagged
@@ -31836,8 +31840,22 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!64 &7115410080493021463
-MeshCollider:
+--- !u!114 &7115410080493021464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285473150499938135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b355d08e23e4a47aff540d1fbd5c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 63996565}
+  stopOnCollision: 1
+--- !u!65 &7115410080493021465
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -31854,24 +31872,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &7115410080493021464
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285473150499938135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5b355d08e23e4a47aff540d1fbd5c82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 63996565}
-  stopOnCollision: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8637979, y: 1.498137, z: 3.0306826}
+  m_Center: {x: 0.023001151, y: 0.665735, z: 0.02659199}
 --- !u!1 &7118450986313860669
 GameObject:
   m_ObjectHideFlags: 0
@@ -32032,28 +32035,6 @@ Transform:
   - {fileID: 3946947938329031728}
   m_Father: {fileID: 3402305891746865611}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &7815340514669542701
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1849092298732552178}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!195 &7815340514669542702
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -32090,6 +32071,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 63996565}
   stopOnCollision: 1
+--- !u!65 &7815340514669542704
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849092298732552178}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4163748, y: 0.7645866, z: 1.274814}
+  m_Center: {x: 0.009140559, y: 0.37584105, z: 0.09474231}
 --- !u!4 &7870225587076734110
 Transform:
   m_ObjectHideFlags: 0
