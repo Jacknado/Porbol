@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.AI.Navigation;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Transform))]
 public class ObstacleSpawner : MonoBehaviour
@@ -159,7 +160,7 @@ public class ObstacleSpawner : MonoBehaviour
 
         int count = Mathf.RoundToInt(spawnedObstacles.Count * coinPercentage);
         HashSet<int> used = new HashSet<int>();
-
+        GameObject.Find("GameProgress").GetComponent<GameProgress>().StartScene(SceneManager.GetActiveScene().buildIndex, count);
         for (int i = 0; i < count; i++)
         {
             int index = GetRandomValidIndex(used);
