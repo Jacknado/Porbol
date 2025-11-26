@@ -4,6 +4,33 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/dev/MainMenu.unity
+    guid: 02012b4939cd56943808deb9c829fda9
+  - enabled: 1
+    path: Assets/UsedAssets/Level1/Level1.unity
+    guid: fa17971ad9e3ced41a5eb6584fcfdd27
+  - enabled: 1
+    path: Assets/UsedAssets/Level2/Level2.unity
+    guid: 900293b8a7f24dd49afe656883ce4e7b
+  - enabled: 1
+    path: Assets/UsedAssets/Level3/Level3.unity
+    guid: 484727a2b39c49f4e917c18efd08a4a2
+  - enabled: 1
+    path: Assets/UsedAssets/Level4/Level4.unity
+    guid: 2fcea25122ed8db4ba353a0b742d3a4f
+  - enabled: 1
+    path: Assets/UsedAssets/Level5/Level5.unity
+    guid: 88feddd5a2f96f0449187a7e7e4da229
+  - enabled: 1
+    path: Assets/UsedAssets/Level6/Level6.unity
+    guid: ac1a4405e3f98fe43bdb332b1ae0ca2e
+  - enabled: 1
+    path: Assets/UsedAssets/Level7/Level7.unity
+    guid: 44919b7fcd5faa0489b8cbbf0c1fb696
+  - enabled: 1
+    path: Assets/UsedAssets/Level8/Level8.unity
+    guid: 06e1aebf0dbdf044c98b3a11d09f2cc4
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

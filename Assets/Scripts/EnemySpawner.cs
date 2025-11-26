@@ -38,6 +38,11 @@ public class EnemySpawner : MonoBehaviour
         if (player == null)
             return;
 
+        if (player.position.x < 0.1)
+        {
+            nextSpawnX = 50;
+        }
+
         if (player.position.x >= nextSpawnX && nextSpawnX < 300)
         {
             SpawnEnemies();

@@ -834,6 +834,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6102796420916574953, guid: de3e31bd8dd84d641bae2368159fd67c, type: 3}
+      propertyPath: levels.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8000446425328870545, guid: de3e31bd8dd84d641bae2368159fd67c, type: 3}
       propertyPath: m_Name
       value: GameProgress
@@ -7432,7 +7436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zMinimum: -15
   zMaximum: 15
-  sidewaysSpeed: 10
+  sidewaysSpeed: 0
   forwardSpeed: 5
   hasExplosion: 0
   hasStep: 0
@@ -11152,7 +11156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zMinimum: -15
   zMaximum: 15
-  sidewaysSpeed: 10
+  sidewaysSpeed: 0
   forwardSpeed: 5
   hasExplosion: 0
   hasStep: 0
