@@ -6324,7 +6324,7 @@ MonoBehaviour:
   forwardSpeed: 5
   hasExplosion: 0
   hasStep: 0
-  deathEffect: {fileID: 1804206099813350, guid: dcbc04312b7423341aee75b8563c17d5, type: 3}
+  deathEffect: {fileID: 1804206099813350, guid: 470bb549132badc4bb09c5d0abb9f996, type: 3}
 --- !u!114 &5430684244404853083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7275,6 +7275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextLevel: {fileID: 38734257407963464}
+  levelDropdown: {fileID: 0}
   isMainMenu: 0
   isDead: 0
   coins: 0
