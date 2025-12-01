@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        if (currentSceneIndex == 7) {
+        if (currentSceneIndex == 8) {
             GameObject.Find("GameProgress").GetComponent<GameProgress>().GameFinished();
             SceneManager.LoadScene(0);
         }
